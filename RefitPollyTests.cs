@@ -74,7 +74,9 @@ namespace UnitTests
                 .ConfigureHttpClient(c => c.BaseAddress = new Uri("https://api.example.com"))
                 .AddPolicyHandler(GetRetryPolicy());
 
+            // adding a custom behaviour on the top of existing client
             services.AddTransient(_ => handler);
+            // this "mutates" http client which works under the hood of IGitHubApi
             services.AddHttpClient(client.Name).AddHttpMessageHandler<CannedResponseHandler>();
 
             return services.BuildServiceProvider();
